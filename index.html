@@ -434,10 +434,10 @@
         <circle class="fg" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-linecap="round"
                 transform="rotate(-90 60 60)" stroke-dasharray="326.726" stroke-dashoffset="326.726"/>
         <text class="num" x="60" y="58" text-anchor="middle" dominant-baseline="middle" id="ringNum">0</text>
-        <text class="den" x="60" y="76" text-anchor="middle" id="ringDen">de 42</text>
+        <text class="den" x="60" y="76" text-anchor="middle" id="ringDen">de 40</text>
       </svg>
       <div class="stats">
-        <div class="stat"><span class="dot d-all"></span><b id="sAll">0/42</b><span>tarefas documentadas</span></div>
+        <div class="stat"><span class="dot d-all"></span><b id="sAll">0/40</b><span>tarefas documentadas</span></div>
         <div class="stat"><span class="dot d-p5"></span><b id="sP5">0/20</b><span>tarefas eliminatórias (P5)</span></div>
         <div class="stat"><span class="dot d-uc"></span><b id="sUc">0/16</b><span>UC completas</span></div>
       </div>
@@ -465,7 +465,7 @@
 <section class="wrap view" id="elementos">
   <div class="eyebrow">Cada tarefa</div>
   <h2>Os 6 elementos de cada tarefa</h2>
-  <p class="lead-note">Repete-se para todas as 42 tarefas. Preencha os seis — nenhum é opcional.</p>
+  <p class="lead-note">Repete-se para todas as 40 tarefas. Preencha os seis — nenhum é opcional.</p>
   <ol class="steps">
     <li><span><b>Descrição da experiência</b><span class="d">Quando, onde e como executou a tarefa: departamento, período, função, e sobretudo o seu nível de autonomia e de responsabilidade.</span></span></li>
     <li><span><b>Evidências documentais</b><span class="d">Documentos reais que provam a tarefa, identificados por número de anexo (ex.: A3). Datados, com o contexto/empresa, e com dados de terceiros anonimizados.</span></span></li>
@@ -537,7 +537,7 @@
       <button class="chip" data-f="incompletas" aria-pressed="false">Por completar</button>
     </div>
     <button class="expand" id="expandAll" type="button">Abrir todas</button>
-    <span class="mini" id="ucMini">0 / 42</span>
+    <span class="mini" id="ucMini">0 / 40</span>
   </div>
 
   <div class="uc-list" id="ucList"></div>
@@ -1093,6 +1093,9 @@
   });
   window.addEventListener("hashchange", function(){ showView(location.hash.slice(1) || "inicio"); });
   showView(location.hash.slice(1) || "inicio");
+
+  var printDateEl = document.getElementById("printDate");
+  if(printDateEl) printDateEl.textContent = new Date().toLocaleDateString("pt-PT");
 
   applyFilter();
   refresh();
