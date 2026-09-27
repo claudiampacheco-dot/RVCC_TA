@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teste de Autoavaliação · RVCC TA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#f6f4ef; --surface:#fffdf9; --surface-2:#eeeae1;
+    --ink:#1c2321; --ink-soft:#565d59;
+    --line:#e3ddd0; --line-strong:#ccc4b3;
+    --accent:#0f5e63; --accent-ink:#0b4a4e; --accent-soft:#d9e9e7;
+    --warn:#a8560c; --warn-soft:#f5e6d4;
+    --good:#2f7d5d; --good-soft:#dcede4;
+    --shadow:0 1px 2px rgba(28,35,33,.05),0 10px 30px -14px rgba(28,35,33,.18);
+    --radius:14px; --nav-h:3rem;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --ground:#12100c; --surface:#1a1712; --surface-2:#241f18;
+      --ink:#ece7dc; --ink-soft:#a7a196;
+      --line:#332d24; --line-strong:#463e31;
+      --accent:#5fbcb6; --accent-ink:#8ed6d0; --accent-soft:#1d3634;
+      --warn:#e0a86b; --warn-soft:#382a1a;
+      --good:#7cc4a1; --good-soft:#1e352b;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -16px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --ground:#12100c; --surface:#1a1712; --surface-2:#241f18;
+    --ink:#ece7dc; --ink-soft:#a7a196;
+    --line:#332d24; --line-strong:#463e31;
+    --accent:#5fbcb6; --accent-ink:#8ed6d0; --accent-soft:#1d3634;
+    --warn:#e0a86b; --warn-soft:#382a1a;
+    --good:#7cc4a1; --good-soft:#1e352b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px -16px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Libre Franklin",-apple-system,"system-ui","Segoe UI",sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:Fraunces,Georgia,serif; font-weight:600; text-wrap:balance; margin:0;}
+  .eyebrow{
+    font:600 .72rem/1 ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--accent-ink);
+  }
+  a{color:var(--accent-ink);}
+
+  /* top bar */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    display:flex; align-items:center; gap:.35rem;
+    padding:.55rem .9rem; padding-top:calc(.55rem + env(safe-area-inset-top,0px));
+    background:color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .topbar::-webkit-scrollbar{display:none;}
+  .topbar .brand{
+    font:600 .82rem/1 "Libre Franklin",sans-serif; color:var(--ink); white-space:nowrap;
+    padding:.4rem .5rem .4rem 0; margin-right:.15rem; text-decoration:none;
+  }
+  .navlink{
+    flex:none; padding:.4rem .65rem; border-radius:999px; white-space:nowrap;
+    font:600 .78rem/1 "Libre Franklin",sans-serif; color:var(--ink-soft);
+    text-decoration:none; border:1px solid transparent;
+  }
+  .navlink:hover{color:var(--ink);}
+  .spacer{flex:1 1 auto; min-width:.25rem;}
+  .badge{
+    flex:none; font:700 .78rem/1 ui-monospace,monospace; padding:.42rem .6rem;
+    border-radius:999px; background:var(--accent-soft); color:var(--accent-ink);
+    white-space:nowrap;
+  }
+
+  main{max-width:760px; margin:0 auto; padding:1.5rem 1.1rem 4rem;}
+
+  .hero .eyebrow{margin-bottom:.6rem; display:block;}
+  .hero h1{font-size:clamp(1.7rem,5vw,2.3rem); margin-bottom:.6rem;}
+  .hero p{color:var(--ink-soft); font-size:1rem; max-width:56ch; margin:0 0 1.1rem;}
+  .noteBox{
+    border-left:3px solid var(--accent); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:.9rem 1.1rem; color:var(--ink-soft);
+    font-size:.92rem; box-shadow:var(--shadow); margin-bottom:1.6rem;
+  }
+
+  .groupHead{margin:2.1rem 0 1rem; padding-top:.6rem; border-top:1px solid var(--line);}
+  .groupHead:first-of-type{border-top:none; padding-top:0;}
+  .groupHead .eyebrow{display:block; margin-bottom:.35rem;}
+  .groupHead h2{font-size:1.25rem;}
+  .groupScore{
+    display:none; margin-top:.4rem; font:600 .82rem/1 "Libre Franklin",sans-serif;
+    color:var(--ink-soft);
+  }
+  .groupScore .tag{
+    display:inline-block; padding:.15rem .5rem; border-radius:999px; margin-left:.4rem;
+    background:var(--surface-2); color:var(--ink);
+  }
+  .groupScore .tag.good{background:var(--good-soft); color:var(--good);}
+  .groupScore .tag.warn{background:var(--warn-soft); color:var(--warn);}
+
+  .qcard{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:1.1rem 1.1rem 1.15rem; margin-bottom:.85rem;
+  }
+  .qhead{display:flex; gap:.7rem; align-items:flex-start; margin-bottom:.75rem;}
+  .qnum{
+    flex:none; width:1.9rem; height:1.9rem; border-radius:8px; background:var(--accent-soft);
+    color:var(--accent-ink); font:700 .85rem/1.9rem ui-monospace,monospace; text-align:center;
+  }
+  .qtext{font:600 .98rem/1.4 "Libre Franklin",sans-serif; padding-top:.15rem;}
+
+  .opt{
+    display:flex; align-items:flex-start; gap:.6rem; padding:.55rem .65rem;
+    border:1px solid var(--line); border-radius:9px; margin-bottom:.45rem; cursor:pointer;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:last-child{margin-bottom:0;}
+  .opt:hover{border-color:var(--line-strong);}
+  .opt input{margin-top:.2rem; accent-color:var(--accent); flex:none;}
+  .opt .lbl{font:500 .92rem/1.4 "Libre Franklin",sans-serif;}
+  .opt .lt{font-weight:700; color:var(--ink-soft); margin-right:.25rem;}
+
+  .opt.sel{border-color:var(--accent); background:var(--accent-soft);}
+  .opt.correct{border-color:var(--good); background:var(--good-soft);}
+  .opt.wrong{border-color:var(--warn); background:var(--warn-soft);}
+  .opt.disabled{cursor:default;}
+
+  .explain{
+    display:none; margin-top:.7rem; padding:.65rem .8rem; border-radius:9px;
+    background:var(--surface-2); font-size:.87rem; color:var(--ink-soft); line-height:1.5;
+  }
+  .explain b{color:var(--ink);}
+  .qcard.answered .explain{display:block;}
+
+  .actionRow{
+    position:sticky; bottom:env(safe-area-inset-bottom,0px); z-index:15;
+    display:flex; gap:.6rem; padding:.8rem 1.1rem; padding-bottom:calc(.8rem + env(safe-area-inset-bottom,0px));
+    background:color-mix(in srgb, var(--ground) 92%, transparent); backdrop-filter:blur(8px);
+    border-top:1px solid var(--line); max-width:760px; margin:0 auto;
+  }
+  button{
+    font:600 .88rem/1 "Libre Franklin",sans-serif; padding:.72rem 1.1rem; border-radius:10px;
+    border:1px solid var(--line-strong); background:var(--surface); color:var(--ink);
+    cursor:pointer;
+  }
+  button.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+  button.primary:disabled{opacity:.45; cursor:not-allowed;}
+  button:hover:not(:disabled){filter:brightness(1.03);}
+
+  .hint{font-size:.8rem; color:var(--ink-soft); align-self:center; margin-right:auto;}
+
+  #results{display:none; margin:0 0 2rem;}
+  #results.show{display:block;}
+  .scoreCard{
+    display:flex; gap:1.3rem; align-items:center; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:1.3rem; margin-bottom:1.1rem; flex-wrap:wrap;
+  }
+  .ring{width:96px; height:96px; border-radius:50%; flex:none;
+    background:conic-gradient(var(--accent) calc(var(--pct,0)*1%), var(--surface-2) 0);
+    display:flex; align-items:center; justify-content:center;}
+  .ring::after{
+    content:""; width:74px; height:74px; border-radius:50%; background:var(--surface);
+  }
+  .ringLabel{position:absolute; text-align:center;}
+  .ringWrap{position:relative; display:flex; align-items:center; justify-content:center;}
+  .ringWrap .big{font:700 1.4rem/1 "Libre Franklin",sans-serif;}
+  .ringWrap .small{font:500 .68rem/1 "Libre Franklin",sans-serif; color:var(--ink-soft);}
+  .scoreText h3{font-size:1.1rem; margin-bottom:.3rem;}
+  .scoreText p{margin:0; color:var(--ink-soft); font-size:.9rem;}
+
+  .breakdown{display:grid; gap:.5rem;}
+  .brow{
+    display:flex; justify-content:space-between; align-items:center; gap:.6rem;
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:.6rem .8rem; font-size:.88rem;
+  }
+  .brow .name{font-weight:600;}
+  .brow .val{font:700 .82rem ui-monospace,monospace; padding:.15rem .5rem; border-radius:999px;}
+  .brow .val.good{background:var(--good-soft); color:var(--good);}
+  .brow .val.warn{background:var(--warn-soft); color:var(--warn);}
+  .brow .val.mid{background:var(--surface-2); color:var(--ink-soft);}
+
+  footer{
+    max-width:760px; margin:2rem auto 0; padding:1.2rem 1.1rem 2.5rem; border-top:1px solid var(--line);
+    color:var(--ink-soft); font-size:.82rem;
+  }
+  footer p{margin:.25rem 0;}
+
+  @media (max-width:480px){
+    .qtext{font-size:.93rem;}
+    .hero h1{font-size:1.55rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="index.html">← Portefólio</a>
+  <a class="navlink" href="#topo">Início</a>
+  <div id="navGroups" style="display:flex; gap:.15rem;"></div>
+  <div class="spacer"></div>
+  <span class="badge" id="progressBadge">0/31</span>
+</div>
+
+<main>
+  <section class="hero" id="topo">
+    <span class="eyebrow">RVCC PROFISSIONAL · TÉCNICO/A ADMINISTRATIVO/A · NÍVEL 4</span>
+    <h1>Teste de Autoavaliação</h1>
+    <p>Escolha múltipla sobre as 9 UFCDs já trabalhadas nas sessões de Formação. Sem nota, sem registo — serve só para verificar o que já ficou consolidado antes da avaliação final do curso.</p>
+    <div class="noteBox">
+      31 perguntas, agrupadas por UFCD. Responda a todas e prima <b>Corrigir tudo</b> no fundo da página — cada pergunta mostra logo a resposta certa e uma explicação curta. Pode repetir quantas vezes quiser com <b>Recomeçar</b>.
+    </div>
+  </section>
+
+  <div id="quizRoot"></div>
+
+  <div id="results">
+    <div class="scoreCard">
+      <div class="ringWrap">
+        <div class="ring" id="scoreRing"></div>
+        <div class="ringLabel"><div class="big" id="scoreBig">0/31</div><div class="small">CORRETAS</div></div>
+      </div>
+      <div class="scoreText">
+        <h3 id="scoreHeadline">Resultado</h3>
+        <p id="scoreSub">Reveja as perguntas assinaladas a laranja acima antes de continuar.</p>
+      </div>
+    </div>
+    <div class="breakdown" id="breakdownList"></div>
+  </div>
+</main>
+
+<div class="actionRow">
+  <span class="hint" id="hintText">Responda a todas as perguntas</span>
+  <button id="btnReset" type="button">Recomeçar</button>
+  <button id="btnCorrect" class="primary" type="button" disabled>Corrigir tudo</button>
+</div>
+
+<footer>
+  <p>Referência: conteúdo técnico dos Guias do Formando das sessões de Formação (9/9 a 30/9/2026), RVCC PRO Técnico/a Administrativo/a — El Corte Inglés, Vila Nova de Gaia.</p>
+  <p>Teste de preparação · Cláudia Pacheco</p>
+</footer>
+
+<script>
+const DATA = [
+  { code:"UFCD 6225", title:"Normalização Documental", id:"g6225", questions:[
+    { q:"Segundo as normas portuguesas de documentação administrativa, quais as margens corretas de um documento?",
+      opts:["3cm superior/esquerda; 2,5cm direita/inferior","2,5cm em todos os lados","3cm em todos os lados","2cm superior/inferior; 3cm direita/esquerda"],
+      correct:0, exp:"A norma define 3cm nas margens superior e esquerda, e 2,5cm nas margens direita e inferior." },
+    { q:"Qual é a forma de tratamento (vocativo) correta para dirigir uma carta comercial a uma empresa, sem destinatário individual identificado?",
+      opts:["“Caro Senhor,”","“Ex.mos Senhores,”","“Prezado Cliente,”","“A quem possa interessar,”"],
+      correct:1, exp:"“Ex.mos Senhores,” é o vocativo formal padrão quando não há um destinatário individual identificado." },
+    { q:"Qual destas expressões deve ser evitada por ser considerada antiquada na redação administrativa atual?",
+      opts:["“Informamos que...”","“Vimos por este meio informar...”","“Agradecemos a atenção dispensada.”","“Ficamos a aguardar a vossa resposta.”"],
+      correct:1, exp:"“Vimos por este meio informar” é uma fórmula datada; a redação atual prefere a forma direta “Informamos que...”" },
+    { q:"Qual destes NÃO é um dos tipos de documento administrativo estudados na normalização documental?",
+      opts:["Carta comercial","Ofício","Memorando","Manifesto eleitoral"],
+      correct:3, exp:"Os tipos estudados foram carta comercial, ofício, memorando, nota de serviço e comunicado — não o manifesto eleitoral." },
+  ]},
+  { code:"UFCD 0661", title:"Circuito Documental", id:"g0661", questions:[
+    { q:"No circuito documental, qual a principal diferença entre usar Cc e Bcc num e-mail?",
+      opts:["Cc oculta os destinatários, Bcc mostra-os","Em Cc todos veem quem recebeu cópia; em Bcc os destinatários em cópia oculta não são visíveis aos outros","Não há diferença, são sinónimos","Bcc é usado apenas para anexos"],
+      correct:1, exp:"Em cópia (Cc) todos os destinatários se veem uns aos outros; em cópia oculta (Bcc) esses destinatários ficam invisíveis para os restantes." },
+    { q:"Qual serviço dos CTT deve ser usado quando é necessária confirmação escrita de que o destinatário recebeu a correspondência?",
+      opts:["Correio Normal","Correio Azul","Correio Registado com Aviso de Receção","Correio Verde"],
+      correct:2, exp:"O Aviso de Receção é o serviço que devolve ao remetente a confirmação (assinada) da entrega." },
+    { q:"Um documento produzido dentro da organização e que nunca sai para o exterior classifica-se como:",
+      opts:["Documento externo","Documento interno","Documento misto","Documento confidencial"],
+      correct:1, exp:"A tipologia básica do circuito documental distingue documentos internos (circulam só dentro da organização) de externos." },
+  ]},
+  { code:"UFCD 0653", title:"Arquivo", id:"g0653", questions:[
+    { q:"Qual o prazo mínimo de conservação de documentos fiscais em Portugal, segundo o art.º 123.º do CIRC?",
+      opts:["5 anos","10 anos","15 anos","20 anos"],
+      correct:1, exp:"O CIRC fixa em 10 anos a obrigação de conservação de documentos fiscalmente relevantes." },
+    { q:"Um documento consultado com pouca frequência, mas que ainda não pode ser eliminado, encontra-se em que fase do ciclo de vida do arquivo?",
+      opts:["Ativo","Semiativo","Inativo","Histórico"],
+      correct:1, exp:"O arquivo semiativo guarda documentos de consulta pouco frequente que ainda estão dentro do prazo de conservação." },
+    { q:"Qual o procedimento correto para eliminar de forma segura documentos com dados pessoais ou confidenciais?",
+      opts:["Colocar no lixo comum","Reciclar sem mais cuidados","Usar um triturador de papel","Guardar indefinidamente por precaução"],
+      correct:2, exp:"O triturador de papel garante que a informação confidencial não pode ser reconstituída após a eliminação." },
+  ]},
+  { code:"UFCD 0654", title:"Ficheiros de Contactos", id:"g0654", questions:[
+    { q:"Qual princípio do RGPD determina que só devem ser recolhidos os dados pessoais estritamente necessários para a finalidade em causa?",
+      opts:["Pseudonimização","Minimização","Portabilidade","Retenção"],
+      correct:1, exp:"O princípio da minimização limita a recolha de dados ao que é estritamente necessário." },
+    { q:"Um ficheiro de contactos organizado por distrito/concelho segue que método de indexação?",
+      opts:["Alfabético","Numérico","Geográfico","Temático"],
+      correct:2, exp:"A organização por localização (distrito, concelho) corresponde ao método de indexação geográfico." },
+    { q:"O que é a pseudonimização de dados pessoais, no contexto do RGPD?",
+      opts:["A eliminação definitiva dos dados","A substituição de dados identificativos de forma a que não seja possível associá-los a uma pessoa sem informação adicional guardada em separado","A publicação de dados em aberto","A cópia dos dados para um segundo sistema"],
+      correct:1, exp:"Pseudonimizar não elimina o dado; substitui o identificador de forma reversível apenas com informação adicional guardada à parte." },
+  ]},
+  { code:"UFCD 0670", title:"Contrato de Compra e Venda", id:"g0670", questions:[
+    { q:"Qual a sequência correta do ciclo documental comercial, da encomenda ao pagamento?",
+      opts:["Fatura → Nota de Encomenda → Guia de Remessa → Recibo","Nota de Encomenda → Guia de Remessa → Fatura → Recibo","Guia de Remessa → Fatura → Nota de Encomenda → Recibo","Recibo → Fatura → Nota de Encomenda → Guia de Remessa"],
+      correct:1, exp:"O ciclo começa na encomenda, segue para o transporte (guia de remessa), depois a fatura e por fim o recibo/nota de crédito." },
+    { q:"Qual a taxa normal de IVA em vigor no Continente?",
+      opts:["13%","6%","23%","21%"],
+      correct:2, exp:"A taxa normal de IVA no Continente é 23% (as reduzidas são 13% e 6%)." },
+    { q:"Um cheque com a menção “não à ordem” tem que característica?",
+      opts:["Pode ser endossado livremente a terceiros","Só pode ser pago à pessoa nele identificada; não pode ser transmitido por endosso","É automaticamente nulo","Só é válido para levantamentos em numerário"],
+      correct:1, exp:"A cláusula “não à ordem” impede a transmissão do cheque por endosso — só o beneficiário indicado o pode receber." },
+    { q:"O que é o endosso de um título de crédito (como uma letra)?",
+      opts:["O cancelamento do título","A transmissão do título a um terceiro, normalmente por assinatura no verso","O pedido de reembolso ao banco","A validação notarial do documento"],
+      correct:1, exp:"Endossar é transmitir o título de crédito a outra pessoa, tipicamente por assinatura no verso do documento." },
+  ]},
+  { code:"UFCD 0668", title:"Ficheiros de Armazém e Contas Correntes", id:"g0668", questions:[
+    { q:"Qual destes métodos de valorimetria de existências NÃO é permitido pelo SNC em Portugal?",
+      opts:["Custo Médio Ponderado (CMP)","FIFO (First In, First Out)","LIFO (Last In, First Out)","Custo específico"],
+      correct:2, exp:"O LIFO não é permitido pelo SNC em Portugal; usam-se CMP, FIFO ou custo específico." },
+    { q:"O que representa o “ponto de encomenda” na gestão de stocks?",
+      opts:["O nível de stock a partir do qual deve ser lançada uma nova encomenda","O stock máximo permitido em armazém","O momento em que ocorre uma rutura de stock","A quantidade encomendada de cada vez"],
+      correct:0, exp:"O ponto de encomenda é o nível de stock que desencadeia uma nova encomenda, antes de se chegar à rutura." },
+    { q:"O que significa “rutura de stock”?",
+      opts:["Excesso de mercadoria em armazém","A situação em que o stock disponível é insuficiente para satisfazer a procura","A perda de mercadoria por deterioração","A devolução de mercadoria ao fornecedor"],
+      correct:1, exp:"Rutura de stock é ficar sem mercadoria suficiente para responder à procura — o oposto do excesso." },
+    { q:"No Custo Médio Ponderado (CMP), como se calcula o custo unitário após uma nova entrada em armazém?",
+      opts:["Usa-se sempre o preço da última compra","Divide-se o valor total das existências (antigas + novas) pela quantidade total de unidades","Usa-se sempre o preço da primeira compra","Soma-se o preço unitário antigo ao novo, sem dividir"],
+      correct:1, exp:"O CMP recalcula-se dividindo o valor total em stock (existente + nova entrada) pela quantidade total de unidades." },
+  ]},
+  { code:"UFCD 0658", title:"Inglês — Comunicação Administrativa", id:"g0658", questions:[
+    { q:"Qual o significado correto da palavra inglesa “actually” (falso amigo comum)?",
+      opts:["Atualmente","Na verdade / De facto","Eventualmente","Realmente enganado"],
+      correct:1, exp:"“Actually” significa “na verdade” / “de facto” — não “atualmente”, que se traduz por “currently” ou “nowadays”." },
+    { q:"Se uma carta comercial em inglês começa com “Dear Sir or Madam,”, qual o fecho formal correto?",
+      opts:["Best regards,","Yours sincerely,","Yours faithfully,","Kind regards,"],
+      correct:2, exp:"Quando não se conhece o nome do destinatário (“Dear Sir or Madam”), o fecho correto é “Yours faithfully,”." },
+    { q:"A palavra inglesa “library” significa em português:",
+      opts:["Livraria","Biblioteca","Livro","Editora"],
+      correct:1, exp:"“Library” é “biblioteca”; “livraria” traduz-se por “bookshop”." },
+    { q:"Qual o significado correto de “to attend” (falso amigo)?",
+      opts:["Atender (uma chamada)","Assistir a / Comparecer em","Prestar atenção","Aguardar"],
+      correct:1, exp:"“To attend” significa “assistir a” ou “comparecer em” (uma reunião, um evento) — não “atender” uma chamada." },
+  ]},
+  { code:"UFCD 0659", title:"Documentação Comercial Internacional", id:"g0659", questions:[
+    { q:"No Incoterm FOB (Free On Board), a partir de que momento o risco passa do vendedor para o comprador?",
+      opts:["À saída da fábrica do vendedor","Quando a mercadoria é colocada a bordo do navio no porto de embarque","Quando a mercadoria chega ao porto de destino","Quando a mercadoria é entregue na morada do comprador"],
+      correct:1, exp:"Em FOB, o risco transfere-se quando a mercadoria é colocada a bordo do navio no porto de embarque acordado." },
+    { q:"Qual documento de transporte marítimo internacional serve como prova de embarque e título de propriedade da mercadoria?",
+      opts:["Packing List","Certificate of Origin","Bill of Lading","Commercial Invoice"],
+      correct:2, exp:"O Bill of Lading (conhecimento de embarque) é simultaneamente recibo de carga, prova de contrato de transporte e título de propriedade." },
+    { q:"O código SWIFT/BIC é utilizado para quê nas transações comerciais internacionais?",
+      opts:["Identificar o país de origem da mercadoria","Identificar o banco numa transferência internacional","Substituir o IBAN em todos os pagamentos","Classificar o tipo de Incoterm usado"],
+      correct:1, exp:"O código SWIFT/BIC identifica o banco (e a sua agência) numa transferência internacional; o IBAN identifica a conta." },
+  ]},
+  { code:"UFCD 6222", title:"Código de Contas — SNC", id:"g6222", questions:[
+    { q:"Como se calcula o IVA a entregar ao Estado (ou a recuperar), numa lógica simples de apuramento?",
+      opts:["IVA Liquidado + IVA Dedutível","IVA Liquidado − IVA Dedutível","IVA Dedutível − IVA Liquidado","IVA Liquidado × Taxa de IVA"],
+      correct:1, exp:"O apuramento resulta da diferença entre o IVA liquidado (cobrado a clientes) e o IVA dedutível (suportado em compras)." },
+    { q:"Em que classe do SNC se enquadram as contas “Clientes” e “Fornecedores”?",
+      opts:["Classe 1 — Meios Financeiros Líquidos","Classe 2 — Contas a Receber e a Pagar","Classe 6 — Gastos","Classe 7 — Rendimentos"],
+      correct:1, exp:"Clientes e Fornecedores pertencem à Classe 2 do SNC, dedicada às contas a receber e a pagar." },
+    { q:"No princípio das partidas dobradas em contabilidade, o que deve verificar-se em cada lançamento?",
+      opts:["O valor a débito é sempre superior ao valor a crédito","O valor total a débito é sempre igual ao valor total a crédito","Só é necessário registar o crédito","O débito e o crédito são registados em contas diferentes sem relação entre si"],
+      correct:1, exp:"Nas partidas dobradas, o total lançado a débito tem sempre de igualar o total lançado a crédito." },
+  ]},
+];
+
+const LETTERS = ["A","B","C","D"];
+const root = document.getElementById("quizRoot");
+const navGroups = document.getElementById("navGroups");
+const state = {};
+
+let totalQ = 0;
+DATA.forEach(group => {
+  totalQ += group.questions.length;
+  const navA = document.createElement("a");
+  navA.className = "navlink"; navA.href = "#" + group.id;
+  navA.textContent = group.code.replace("UFCD ","");
+  navGroups.appendChild(navA);
+
+  const head = document.createElement("div");
+  head.className = "groupHead"; head.id = group.id;
+  head.innerHTML = `<span class="eyebrow">${group.code}</span><h2>${group.title}</h2><div class="groupScore" id="score_${group.id}"></div>`;
+  root.appendChild(head);
+
+  group.questions.forEach((item, qi) => {
+    const qid = group.id + "_" + qi;
+    const card = document.createElement("div");
+    card.className = "qcard"; card.id = "card_" + qid;
+    const num = (Array.from(root.querySelectorAll(".qcard")).length) + 1;
+    let optsHtml = "";
+    item.opts.forEach((opt, oi) => {
+      optsHtml += `<label class="opt" data-oi="${oi}" id="opt_${qid}_${oi}">
+        <input type="radio" name="${qid}" value="${oi}">
+        <span class="lbl"><span class="lt">${LETTERS[oi]}.</span>${opt}</span>
+      </label>`;
+    });
+    card.innerHTML = `
+      <div class="qhead"><div class="qnum">${num}</div><div class="qtext">${item.q}</div></div>
+      ${optsHtml}
+      <div class="explain" id="exp_${qid}"><b>Porquê:</b> ${item.exp}</div>
+    `;
+    root.appendChild(card);
+
+    card.querySelectorAll(".opt").forEach(optEl => {
+      optEl.addEventListener("click", () => {
+        if (card.classList.contains("locked")) return;
+        state[qid] = parseInt(optEl.dataset.oi, 10);
+        card.querySelectorAll(".opt").forEach(o => o.classList.remove("sel"));
+        optEl.classList.add("sel");
+        optEl.querySelector("input").checked = true;
+        updateProgress();
+      });
+    });
+    card.dataset.groupId = group.id;
+    card.dataset.correct = item.correct;
+    card.dataset.qid = qid;
+  });
+});
+
+function updateProgress(){
+  const answered = Object.keys(state).length;
+  document.getElementById("progressBadge").textContent = answered + "/" + totalQ;
+  const btn = document.getElementById("btnCorrect");
+  btn.disabled = answered < totalQ;
+  document.getElementById("hintText").textContent =
+    answered < totalQ ? `Faltam ${totalQ - answered} pergunta(s)` : "Todas as perguntas respondidas — pode corrigir";
+}
+updateProgress();
+
+document.getElementById("btnCorrect").addEventListener("click", () => {
+  let correctCount = 0;
+  const perGroup = {};
+  DATA.forEach(g => perGroup[g.id] = {correct:0, total:g.questions.length});
+
+  document.querySelectorAll(".qcard").forEach(card => {
+    const qid = card.dataset.qid;
+    const correctIdx = parseInt(card.dataset.correct, 10);
+    const selected = state[qid];
+    const gid = card.dataset.groupId;
+    card.classList.add("answered", "locked");
+    card.querySelectorAll(".opt").forEach(o => o.classList.add("disabled"));
+    const correctOpt = card.querySelector(`#opt_${qid}_${correctIdx}`);
+    correctOpt.classList.add("correct");
+    if (selected === correctIdx) {
+      correctCount++;
+      perGroup[gid].correct++;
+    } else if (selected !== undefined) {
+      const wrongOpt = card.querySelector(`#opt_${qid}_${selected}`);
+      wrongOpt.classList.remove("sel");
+      wrongOpt.classList.add("wrong");
+    }
+  });
+
+  DATA.forEach(g => {
+    const el = document.getElementById("score_" + g.id);
+    const s = perGroup[g.id];
+    const cls = s.correct === s.total ? "good" : (s.correct === 0 ? "warn" : "");
+    el.style.display = "block";
+    el.innerHTML = `Nesta UFCD: <span class="tag ${cls}">${s.correct}/${s.total}</span>`;
+  });
+
+  const pct = Math.round((correctCount/totalQ)*100);
+  document.getElementById("scoreRing").style.setProperty("--pct", pct);
+  document.getElementById("scoreBig").textContent = correctCount + "/" + totalQ;
+  const head = document.getElementById("scoreHeadline");
+  const sub = document.getElementById("scoreSub");
+  if (pct >= 85){ head.textContent = "Muito sólido"; sub.textContent = "A maior parte das matérias está bem consolidada. Reveja só as perguntas assinaladas a laranja."; }
+  else if (pct >= 60){ head.textContent = "Bom ponto de partida"; sub.textContent = "Há UFCDs a reforçar — veja a lista abaixo e reveja o guia dessas sessões."; }
+  else { head.textContent = "Vale a pena rever"; sub.textContent = "Reveja os guiões do formando das UFCDs mais fracas antes da avaliação final."; }
+
+  const breakdown = document.getElementById("breakdownList");
+  breakdown.innerHTML = "";
+  DATA.forEach(g => {
+    const s = perGroup[g.id];
+    const cls = s.correct === s.total ? "good" : (s.correct === 0 ? "warn" : "mid");
+    const row = document.createElement("div");
+    row.className = "brow";
+    row.innerHTML = `<span class="name">${g.code} — ${g.title}</span><span class="val ${cls}">${s.correct}/${s.total}</span>`;
+    breakdown.appendChild(row);
+  });
+
+  document.getElementById("results").classList.add("show");
+  document.getElementById("btnCorrect").disabled = true;
+  document.getElementById("hintText").textContent = "Corrigido — veja o resultado no fundo da página";
+  document.getElementById("results").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+document.getElementById("btnReset").addEventListener("click", () => {
+  Object.keys(state).forEach(k => delete state[k]);
+  document.querySelectorAll(".qcard").forEach(card => {
+    card.classList.remove("answered","locked");
+    card.querySelectorAll(".opt").forEach(o => o.classList.remove("sel","correct","wrong","disabled"));
+    card.querySelectorAll("input[type=radio]").forEach(i => i.checked = false);
+  });
+  document.querySelectorAll(".groupScore").forEach(el => el.style.display = "none");
+  document.getElementById("results").classList.remove("show");
+  updateProgress();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+</script>
+</body>
+</html>
